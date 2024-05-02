@@ -1,0 +1,25 @@
+{
+  "ModId": "p4g64.riseOutfit",
+  "ModName": "Rise Outfit Changer",
+  "ModAuthor": "AnimatedSwine37",
+  "ModVersion": "1.0.0",
+  "ModDescription": "Lets you change the outfit of Rise when she assists with an All Out Attack",
+  "ModDll": "p4g64.riseOutfit.dll",
+  "ModIcon": "Preview.png",
+  "ModR2RManagedDll32": "x86/p4g64.riseOutfit.dll",
+  "ModR2RManagedDll64": "x64/p4g64.riseOutfit.dll",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "",
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "p4g64.riseOutfit.ReleaseMetadata.json",
+  "PluginData": {},
+  "IsUniversalMod": false,
+  "ModDependencies": [
+    "reloaded.sharedlib.hooks",
+    "Reloaded.Memory.SigScan.ReloadedII",
+    "p5rpc.modloader"
+  ],
+  "OptionalDependencies": [],
+  "SupportedAppId": ["p4g.exe"],
+  "ProjectUrl": ""
+}
