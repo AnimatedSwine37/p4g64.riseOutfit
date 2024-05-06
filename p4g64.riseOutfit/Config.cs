@@ -4,11 +4,6 @@ using System.ComponentModel;
 namespace p4g64.riseOutfit.Configuration;
 public class Config : Configurable<Config>
 {
-    [DisplayName("Rise Bed File")]
-    [Description("The name of the bed file to use for Rise's assist.")]
-    [DefaultValue("ASSIST_RISE_S.BED")]
-    public string RiseBed { get; set; } = "ASSIST_RISE_S.BED";
-
     [DisplayName("Debug Mode")]
     [Description("Logs additional information to the console that is useful for debugging.")]
     [DefaultValue(false)]
