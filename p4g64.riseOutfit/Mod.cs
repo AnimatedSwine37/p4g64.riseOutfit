@@ -1,4 +1,6 @@
 ﻿using p4g64.riseOutfit.Configuration;
+using p4g64.riseOutfit.Menu;
+using p4g64.riseOutfit.Native;
 using p4g64.riseOutfit.Template;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
@@ -7,6 +9,7 @@ using Reloaded.Mod.Interfaces;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using static p4g64.riseOutfit.Native.Party;
 using static p4g64.riseOutfit.Utils;
 using IReloadedHooks = Reloaded.Hooks.ReloadedII.Interfaces.IReloadedHooks;
 
@@ -64,6 +67,8 @@ public unsafe class Mod : ModBase // <= Do not Remove.
 
     private IReverseWrapper<GetRiseOutfitDelegate> _getRiseOutfitReverseWrapper;
 
+    private CostumeShop _costumeShop;
+
     public Mod(ModContext context)
     {
         //Debugger.Launch();
@@ -75,6 +80,9 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         _modConfig = context.ModConfig;
 
         Initialise(_logger, _configuration, _modLoader);
+        Party.Initialise(_hooks!);
+
+        _costumeShop = new CostumeShop(_hooks!);
 
         string[] function =
         {
@@ -159,6 +167,7 @@ public unsafe class Mod : ModBase // <= Do not Remove.
     /// </summary>
     private void GiveDefaultEquipment()
     {
+
         foreach (var item in _defaultItems)
         {
             if (_items[(int)item.Key] > 0 && _items[(int)item.Value] == 0 && _partyInfo->RiseCostume != item.Value)
@@ -167,6 +176,9 @@ public unsafe class Mod : ModBase // <= Do not Remove.
                 _items[(int)item.Value] = 1;
             }
         }
+
+        if (_partyInfo->RiseWeapon == Item.GolfClub)
+            _partyInfo->RiseWeapon = Item.BareHand;
 
         if (_partyInfo->RiseArmor == Item.TShirt)
             _partyInfo->RiseArmor = Item.LaceCamisole;
@@ -302,19 +314,6 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         internal Item Item;
     }
 
-    private enum PartyMember : short
-    {
-        None,
-        Protagonist,
-        Yosuke,
-        Chie,
-        Yukiko,
-        Rise,
-        Kanji,
-        Naoto,
-        Teddie
-    }
-
     private enum Item : short
     {
         GolfClub = 1,
@@ -337,6 +336,7 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         RiseMidwinterOutfit = 1941,
         YuMidwinterYaso = 1977,
         RiseMidwinterYaso = 1981,
+        BareHand = 2559,
     }
 
     private Dictionary<Item, Item> _defaultItems = new()
