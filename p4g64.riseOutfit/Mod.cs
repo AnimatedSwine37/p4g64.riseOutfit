@@ -171,7 +171,7 @@ public unsafe class Mod : ModBase // <= Do not Remove.
 
         foreach (var item in _defaultItems)
         {
-            if (_items[(int)item.Key] > 0 && _items[(int)item.Value] == 0 && _partyInfo->RiseCostume != item.Value)
+            if ((_items[(int)item.Key] > 0 || _partyInfo->YuOutfit == item.Key) && _items[(int)item.Value] == 0 && _partyInfo->RiseCostume != item.Value)
             {
                 Log($"Giving outfit {item.Value}");
                 _items[(int)item.Value] = 1;
@@ -264,6 +264,9 @@ public unsafe class Mod : ModBase // <= Do not Remove.
     [StructLayout(LayoutKind.Explicit)]
     private struct PartyInfo
     {
+        [FieldOffset(0x52)]
+        internal Item YuOutfit;
+
         [FieldOffset(0x25C)]
         internal Item RiseWeapon;
 
