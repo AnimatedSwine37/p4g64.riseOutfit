@@ -81,6 +81,7 @@ public unsafe class Mod : ModBase // <= Do not Remove.
 
         Initialise(_logger, _configuration, _modLoader);
         Party.Initialise(_hooks!);
+        Flags.Initialise(_hooks!);
 
         _costumeShop = new CostumeShop(_hooks!);
 
@@ -175,6 +176,12 @@ public unsafe class Mod : ModBase // <= Do not Remove.
                 Log($"Giving outfit {item.Value}");
                 _items[(int)item.Value] = 1;
             }
+        }
+
+        if(Flags.CheckFlag(Flags.Flag.GoldenEnding) && _items[(int)Item.RiseEpilogue] == 0 && _partyInfo->RiseCostume != Item.RiseEpilogue)
+        {
+            Log($"Giving outfit {Item.RiseEpilogue}");
+            _items[(int)Item.RiseEpilogue] = 1;
         }
 
         if (_partyInfo->RiseWeapon == Item.GolfClub)
@@ -337,6 +344,7 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         YuMidwinterYaso = 1977,
         RiseMidwinterYaso = 1981,
         BareHand = 2559,
+        RiseEpilogue = 1997,
     }
 
     private Dictionary<Item, Item> _defaultItems = new()
