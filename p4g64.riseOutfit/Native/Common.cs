@@ -2,15 +2,24 @@
 using static p4g64.riseOutfit.Utils;
 
 namespace p4g64.riseOutfit.Native;
-internal unsafe class Flags
+internal unsafe class Common
 {
     private static byte** _flags;
+
+    private static short** _date;
+
+    internal static short Date => **_date;
 
     internal static void Initialise(IReloadedHooks hooks)
     {
         SigScan("48 8B 0D ?? ?? ?? ?? F6 81 ?? ?? ?? ?? 40", "FlagsPtr", address =>
         {
             _flags = (byte**)GetGlobalAddress(address + 3);
+        });
+
+        SigScan("4C 8B 15 ?? ?? ?? ?? 8B 4C 24 ??", "DatePtr", address =>
+        {
+            _date = (short**)GetGlobalAddress(address + 3);
         });
     }
 
@@ -26,6 +35,7 @@ internal unsafe class Flags
 
     internal enum Flag
     {
+        NewGamePlus = 2048,
         GoldenEnding = 5187,
     }
 
