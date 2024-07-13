@@ -11,28 +11,28 @@
 [s]Warm clothes for[n]Inaba's cold winters.[n][e]
 
 [msg dress_035]
-[s]Rise's Bikini[n]TO CHANGE[n][e]
+[s]A flashy orange bikini [n]fit for an idol.[n][e]
 
 [msg dress_05F]
 [s]Basic style for entering a[n]hot spring. Remember not to[n]let the towel into the water.[n][e]
 
 [msg dress_085]
-[s]Rise's Yukata[n]TO CHANGE[n][e]
+[s]Customary summer festival outfit, [n]ideal for any girl who wants [n]to stand out.[n][e]
 
 [msg dress_095]
-[s]Heavy winter clothing for the chilling winters of Inaba.[n]The pastel colors help it pop.[n][e]
+[s]Heavy winter clothing for the [n]chilling winters of Inaba.[n]The pastel colors help it pop.[n][e]
 
 [msg dress_0B5]
-[s]Rise's tofu shop outfit[n]TO CHANGE[n][e]
+[s]Unassuming work clothes for [n]Marukyu Tofu. Its simple appearance [n]can make even idols look plain.[n][e]
 
 [msg dress_0BD]
-[s]A modified Yasogami High uniform for the cold winters.[n]The (insert adjective here) jacket makes for a simple yet stylish appearance.[n][e]
+[s]A modified Yasogami High uniform [n]for the cold winters. The pink [n]scarf stands out.[n][e]
 
 [msg dress_0C5]
-[s]Rise's Ski Trip Outfit[n]TO CHANGE[n][e]
+[s]Heavy skiing clothes, [n]for staying warm on the slopes.[n][e]
 
 [msg dress_0CD]
-[s]Rise's Epilogue Outfit[n]TO CHANGE[n][e]
+[s]This trendy look is the latest in [n]summer fashion! The thin clothes let [n]you stay cool while looking stylish.[n][e]
 
 [msg dress_0D5]
-[s]Shadow Rise[n]TO CHANGE[n][e]
+[s]A revealing swimsuit born from [n]formerly repressed feelings. [n]Who made this, anyways...?[n][e]
