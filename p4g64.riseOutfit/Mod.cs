@@ -14,6 +14,7 @@ using static p4g64.riseOutfit.Utils;
 using IReloadedHooks = Reloaded.Hooks.ReloadedII.Interfaces.IReloadedHooks;
 
 namespace p4g64.riseOutfit;
+
 /// <summary>
 /// Your mod logic goes here.
 /// </summary>
@@ -87,25 +88,27 @@ public unsafe class Mod : ModBase // <= Do not Remove.
 
         string[] function =
         {
-                "use64",
-                "sub rsp, 40",
-                "push rcx\npush r8\npush r9\npush r10\npush r11",
-                "mov rcx, rdx",
-                _hooks!.Utilities.GetAbsoluteCallMnemonics(GetRiseOutfit, out _getRiseOutfitReverseWrapper),
-                "mov rdx, rax",
-                "pop r11\npop r10\npop r9\npop r8\npop rcx",
-                "add rsp, 40"
-            };
+            "use64",
+            "sub rsp, 40",
+            "push rcx\npush r8\npush r9\npush r10\npush r11",
+            "mov rcx, rdx",
+            _hooks!.Utilities.GetAbsoluteCallMnemonics(GetRiseOutfit, out _getRiseOutfitReverseWrapper),
+            "mov rdx, rax",
+            "pop r11\npop r10\npop r9\npop r8\npop rcx",
+            "add rsp, 40"
+        };
 
-        SigScan("E8 ?? ?? ?? ?? 48 8D 8D ?? ?? ?? ?? 48 C7 C0 FF FF FF FF 0F 1F 44 ?? 00", "Rise AoA Outfit", address =>
-        {
-            _aoaOutfitHook = _hooks.CreateAsmHook(function, address, AsmHookBehaviour.ExecuteFirst).Activate();
-        });
+        SigScan("E8 ?? ?? ?? ?? 48 8D 8D ?? ?? ?? ?? 48 C7 C0 FF FF FF FF 0F 1F 44 ?? 00", "Rise AoA Outfit",
+            address =>
+            {
+                _aoaOutfitHook = _hooks.CreateAsmHook(function, address, AsmHookBehaviour.ExecuteFirst).Activate();
+            });
 
-        SigScan("E8 ?? ?? ?? ?? 48 8D 8D ?? ?? ?? ?? 48 C7 C0 FF FF FF FF 0F 1F 40 00", "Rise Assist Outfit", address =>
-        {
-            _assistOutfitHook = _hooks.CreateAsmHook(function, address, AsmHookBehaviour.ExecuteFirst).Activate();
-        });
+        SigScan("E8 ?? ?? ?? ?? 48 8D 8D ?? ?? ?? ?? 48 C7 C0 FF FF FF FF 0F 1F 40 00", "Rise Assist Outfit",
+            address =>
+            {
+                _assistOutfitHook = _hooks.CreateAsmHook(function, address, AsmHookBehaviour.ExecuteFirst).Activate();
+            });
 
         SigScan("66 83 FB 05 74 ?? 0F B7 CB E8 ?? ?? ?? ?? 85 C0 74 ?? 49 0F BF C7", "Setup Equip Menu", address =>
         {
@@ -118,26 +121,23 @@ public unsafe class Mod : ModBase // <= Do not Remove.
             _equipMenuHook = _hooks.CreateAsmHook(function, address, AsmHookBehaviour.DoNotExecuteOriginal).Activate();
         });
 
-        SigScan("48 8B 0D ?? ?? ?? ?? 4C 8D 67 ??", "PartyInfoPtr", address =>
-        {
-            _partyInfoPtr = (PartyInfo**)GetGlobalAddress(address + 3);
-        });
+        SigScan("48 8B 0D ?? ?? ?? ?? 4C 8D 67 ??", "PartyInfoPtr",
+            address => { _partyInfoPtr = (PartyInfo**)GetGlobalAddress(address + 3); });
 
-        SigScan("48 8B 1D ?? ?? ?? ?? 45 33 C0 80 BB ?? ?? ?? ?? 01", "ItemsPtr", address =>
-        {
-            _itemsPtr = (byte**)GetGlobalAddress(address + 3);
-        });
+        SigScan("48 8B 1D ?? ?? ?? ?? 45 33 C0 80 BB ?? ?? ?? ?? 01", "ItemsPtr",
+            address => { _itemsPtr = (byte**)GetGlobalAddress(address + 3); });
 
-        SigScan("48 89 05 ?? ?? ?? ?? 44 8B 42 ?? 48 8B 52 ?? E8 ?? ?? ?? ?? 48 8B 1D ?? ?? ?? ?? 48 8B 0B 48 85 C9 74 ?? E8 ?? ?? ?? ?? 48 8B CB E8 ?? ?? ?? ?? 33 D2", "FacilityFtdsPtr", address =>
-        {
-            _facilityFtdsPtr = (FacilityFtds**)GetGlobalAddress(address + 3);
-        });
+        SigScan(
+            "48 89 05 ?? ?? ?? ?? 44 8B 42 ?? 48 8B 52 ?? E8 ?? ?? ?? ?? 48 8B 1D ?? ?? ?? ?? 48 8B 0B 48 85 C9 74 ?? E8 ?? ?? ?? ?? 48 8B CB E8 ?? ?? ?? ?? 33 D2",
+            "FacilityFtdsPtr", address => { _facilityFtdsPtr = (FacilityFtds**)GetGlobalAddress(address + 3); });
 
-        SigScan("48 89 5C 24 ?? 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 ?? 48 81 EC 90 00 00 00 4C 8B E1", "SetupEquipMenuInfo", address =>
-        {
-            _setupEquipMenuHook = _hooks.CreateHook<SetupEquipMenuInfoDelegate>(SetupEquipMenuInfo, address).Activate();
-        });
-
+        SigScan("48 89 5C 24 ?? 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 ?? 48 81 EC 90 00 00 00 4C 8B E1",
+            "SetupEquipMenuInfo",
+            address =>
+            {
+                _setupEquipMenuHook = _hooks.CreateHook<SetupEquipMenuInfoDelegate>(SetupEquipMenuInfo, address)
+                    .Activate();
+            });
     }
 
     private nuint SetupEquipMenuInfo(nuint param1, nuint param2, nuint param3)
@@ -168,27 +168,38 @@ public unsafe class Mod : ModBase // <= Do not Remove.
     /// </summary>
     private void GiveDefaultEquipment()
     {
-
         foreach (var item in _defaultItems)
         {
-            if ((_items[(int)item.Key] > 0 || _partyInfo->YuOutfit == item.Key) && _items[(int)item.Value] == 0 && _partyInfo->RiseCostume != item.Value)
+            if ((_items[(int)item.Key] > 0 || _partyInfo->YuOutfit == item.Key) && _items[(int)item.Value] == 0 &&
+                _partyInfo->RiseCostume != item.Value)
             {
                 Log($"Giving outfit {item.Value}");
                 _items[(int)item.Value] = 1;
             }
         }
 
-        if(Common.CheckFlag(Common.Flag.GoldenEnding) && _items[(int)Item.RiseEpilogue] == 0 && _partyInfo->RiseCostume != Item.RiseEpilogue)
+        if (Common.CheckFlag(Common.Flag.GoldenEnding) && _items[(int)Item.RiseEpilogue] == 0 &&
+            _partyInfo->RiseCostume != Item.RiseEpilogue)
         {
             Log($"Giving outfit {Item.RiseEpilogue}");
             _items[(int)Item.RiseEpilogue] = 1;
         }
 
         // Give ski trip outfit after 2/11 or in ng+
-        if((Common.Date > 316 || Common.CheckFlag(Common.Flag.NewGamePlus)) && _items[(int)Item.RiseSkiTripOutfit] == 0 && _partyInfo->RiseCostume != Item.RiseSkiTripOutfit)
+        if ((Common.Date > 316 || Common.CheckFlag(Common.Flag.NewGamePlus)) &&
+            _items[(int)Item.RiseSkiTripOutfit] == 0 && _partyInfo->RiseCostume != Item.RiseSkiTripOutfit)
         {
             Log($"Giving outfit {Item.RiseSkiTripOutfit}");
             _items[(int)Item.RiseSkiTripOutfit] = 1;
+        }
+
+        // Giv Shadow Rise outfit after beating the bonus boss in Marukyu Striptease
+        if (!Common.CheckFlag(Common.Flag.StripteaseBonusBossAvailable) &&
+            Common.CheckFlag(Common.Flag.StripteaseBonusBossItemAvailable) &&
+            _items[(int)Item.ShaodwRiseOutfit] == 0 && _partyInfo->RiseCostume != Item.ShaodwRiseOutfit)
+        {
+            Log($"Giving outfit {Item.ShaodwRiseOutfit}");
+            _items[(int)Item.ShaodwRiseOutfit] = 1;
         }
 
         if (_partyInfo->RiseWeapon == Item.GolfClub)
@@ -209,7 +220,8 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         for (int i = 0; i < costumeSetFtd->NumEntries; i++)
         {
             var set = &((CostumeSet*)&costumeSetFtd->Entries)[i];
-            if (_items[(int)set->Item] > 0 && TryFindPartySetItem(set, PartyMember.Rise, out var riseOutfit) && _items[(int)riseOutfit] == 0 && _partyInfo->RiseCostume != riseOutfit)
+            if (_items[(int)set->Item] > 0 && TryFindPartySetItem(set, PartyMember.Rise, out var riseOutfit) &&
+                _items[(int)riseOutfit] == 0 && _partyInfo->RiseCostume != riseOutfit)
             {
                 for (int j = 0; j < 8; j++)
                 {
@@ -224,7 +236,6 @@ public unsafe class Mod : ModBase // <= Do not Remove.
                 }
             }
         }
-
     }
 
     /// <summary>
@@ -245,6 +256,7 @@ public unsafe class Mod : ModBase // <= Do not Remove.
                 return true;
             }
         }
+
         item = 0;
         return false;
     }
@@ -262,29 +274,26 @@ public unsafe class Mod : ModBase // <= Do not Remove.
 
             ftd = (Ftd*)((byte*)ftd + 0x24 + ftd->AlignedSize);
         }
+
         return null;
     }
 
     private delegate string GetRiseOutfitDelegate(string currentStr);
+
     private delegate nuint SetupEquipMenuInfoDelegate(nuint param1, nuint param2, nuint param3);
 
     [StructLayout(LayoutKind.Explicit)]
     private struct PartyInfo
     {
-        [FieldOffset(0x52)]
-        internal Item YuOutfit;
+        [FieldOffset(0x52)] internal Item YuOutfit;
 
-        [FieldOffset(0x25C)]
-        internal Item RiseWeapon;
+        [FieldOffset(0x25C)] internal Item RiseWeapon;
 
-        [FieldOffset(0x25E)]
-        internal Item RiseArmor;
+        [FieldOffset(0x25E)] internal Item RiseArmor;
 
-        [FieldOffset(0x260)]
-        internal Item RiseAccessory;
+        [FieldOffset(0x260)] internal Item RiseAccessory;
 
-        [FieldOffset(0x262)]
-        internal Item RiseCostume;
+        [FieldOffset(0x262)] internal Item RiseCostume;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -297,31 +306,24 @@ public unsafe class Mod : ModBase // <= Do not Remove.
     [StructLayout(LayoutKind.Explicit)]
     private struct Ftd
     {
-        [FieldOffset(0)]
-        internal fixed byte Name[0x20];
+        [FieldOffset(0)] internal fixed byte Name[0x20];
 
-        [FieldOffset(0x20)]
-        internal int AlignedSize;
+        [FieldOffset(0x20)] internal int AlignedSize;
 
-        [FieldOffset(0x24)]
-        internal int Size;
+        [FieldOffset(0x24)] internal int Size;
 
-        [FieldOffset(0x28)]
-        internal int NumEntries;
+        [FieldOffset(0x28)] internal int NumEntries;
 
-        [FieldOffset(0x34)]
-        internal byte Entries;
+        [FieldOffset(0x34)] internal byte Entries;
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 0x22)]
     private struct CostumeSet
     {
-        [FieldOffset(0)]
-        internal Item Item;
+        [FieldOffset(0)] internal Item Item;
 
         // Array of 8 items
-        [FieldOffset(2)]
-        internal SetItem Items;
+        [FieldOffset(2)] internal SetItem Items;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -358,6 +360,8 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         RiseTofuOutfit = 1973,
         SignedPhoto = 1189,
         RiseSkiTripOutfit = 1989,
+        ShaodwRiseOutfit = 2005,
+        RiseYukata = 1925,
     }
 
     private Dictionary<Item, Item> _defaultItems = new()
@@ -373,6 +377,7 @@ public unsafe class Mod : ModBase // <= Do not Remove.
     };
 
     #region Standard Overrides
+
     public override void ConfigurationUpdated(Config configuration)
     {
         // Apply settings from configuration.
@@ -380,11 +385,16 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         _configuration = configuration;
         _logger.WriteLine($"[{_modConfig.ModId}] Config Updated: Applying");
     }
+
     #endregion
 
     #region For Exports, Serialization etc.
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public Mod() { }
+    public Mod()
+    {
+    }
 #pragma warning restore CS8618
+
     #endregion
 }

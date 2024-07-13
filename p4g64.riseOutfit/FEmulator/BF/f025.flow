@@ -1,0 +1,26 @@
+void playhouse_item_hook()
+{
+    int teddieWeaponId;
+    int teddieWeaponNum;
+    teddieWeaponId = ( 0 + 219 );
+    teddieWeaponNum = ( GET_ITEM( teddieWeaponId ) + 1 );
+    BIT_OFF( 3752 );
+    OPEN_MSG_WIN();
+    MSG( FIND_ITEM );
+    // Give teddie's signature weapon (normal behaviour)
+    SET_ITEM( teddieWeaponId, teddieWeaponNum );
+    SET_MSG_VAR( 0, teddieWeaponId, 1 );
+    SET_MSG_VAR( 1, 1, 0 );
+    MSG( GET_ITEM_MES );
+    
+    // Give Shadow Rise outfit (new behaviour)
+    int riseOutfitId = 2005;
+    if(GET_ITEM(riseOutfitId) == 0) 
+    {
+        SET_ITEM( riseOutfitId, 1 );
+        SET_MSG_VAR( 0, riseOutfitId, 1 );
+        SET_MSG_VAR( 1, 1, 0 );
+        MSG( GET_ITEM_MES );
+    }
+    CLOSE_MSG_WIN();
+}

@@ -37,6 +37,8 @@ internal unsafe class Common
     {
         NewGamePlus = 2048,
         GoldenEnding = 5187,
+        StripteaseBonusBossAvailable = 3760, // On if you haven't beat the boss yet, off if you have
+        StripteaseBonusBossItemAvailable = 3752, // On if you haven't collected the item yet, off otherwise (only applicable if you have actually beat the boss)
     }
 
 }
