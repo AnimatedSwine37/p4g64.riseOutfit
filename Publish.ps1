@@ -162,7 +162,7 @@ param (
     $UseScriptDirectory=$True,
 
     ## => User Config <= ## 
-    $ProjectPath = "p4g64.riseOutfit.csproj/p4g64.riseOutfit.csproj",
+    $ProjectPath = "p4g64.riseOutfit/p4g64.riseOutfit.csproj",
     $PackageName = "p4g64.riseOutfit",
     $PublishOutputDir = "Publish/ToUpload",
 
