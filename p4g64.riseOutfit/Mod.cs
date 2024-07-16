@@ -362,6 +362,8 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         RiseSkiTripOutfit = 1989,
         ShaodwRiseOutfit = 2005,
         RiseYukata = 1925,
+        RiseGekkou = 1829,
+        ChieGekkou = 1827,
     }
 
     private Dictionary<Item, Item> _defaultItems = new()
@@ -373,7 +375,8 @@ public unsafe class Mod : ModBase // <= Do not Remove.
         { Item.YuMidwinterYaso, Item.RiseMidwinterYaso },
         { Item.YuMidwinterOutfit, Item.RiseMidwinterOutfit },
         { Item.YuBathTowel, Item.RiseBathTowel },
-        { Item.SignedPhoto, Item.RiseTofuOutfit }
+        { Item.SignedPhoto, Item.RiseTofuOutfit },
+        { Item.ChieGekkou, Item.RiseGekkou }
     };
 
     #region Standard Overrides

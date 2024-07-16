@@ -10,6 +10,9 @@
 [msg dress_020]
 [s]Warm clothes for[n]Inaba's cold winters.[n][e]
 
+[msg dress_025]
+[s][s]Classy Gekkoukan High[n]uniform for women.[n][e]
+
 [msg dress_035]
 [s]A flashy orange bikini [n]fit for an idol.[n][e]
 
