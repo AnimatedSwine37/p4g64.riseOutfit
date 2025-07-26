@@ -29,7 +29,7 @@ env:
   PUBLISH_GITHUB_PATH: ./Publish/ToUpload/Generic
   PUBLISH_NUGET_PATH: ./Publish/ToUpload/NuGet
   
-  PUBLISH_CHANGELOG_PATH: ./Publish/Changelog.md
+  PUBLISH_CHANGELOG_PATH: ./CHANGELOG.md
   PUBLISH_PATH: ./Publish
   
   RELOADEDIIMODS: .
@@ -67,30 +67,12 @@ jobs:
       uses: actions/setup-dotnet@v1.8.2
       with:
         dotnet-version: 7.0.x
-        
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        
-    - name: Setup AutoChangelog
-      run: npm install -g auto-changelog
-      
-    - name: Create Changelog
-      run: |
-        [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PATH")
-        if ($env:IS_RELEASE -eq 'true') {
-            auto-changelog --sort-commits date --hide-credit --template changelog-template.hbs --commit-limit false --starting-version "$env:RELEASE_TAG" --output "$env:PUBLISH_CHANGELOG_PATH"
-        }
-        else {
-            auto-changelog --sort-commits date --hide-credit --template changelog-template.hbs --commit-limit false --unreleased --output "$env:PUBLISH_CHANGELOG_PATH"
-        }
-        
+                        
     - name: Build
       run: ./Publish.ps1 -ChangelogPath "$env:PUBLISH_CHANGELOG_PATH"
       
     - name: Upload GitHub Release Artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v4
       with:
         # Artifact name
         name: GitHub Release
@@ -99,7 +81,7 @@ jobs:
           ${{ env.PUBLISH_GITHUB_PATH }}/*
           
     - name: Upload GameBanana Release Artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v4
       with:
         # Artifact name
         name: GameBanana Release
@@ -108,7 +90,7 @@ jobs:
           ${{ env.PUBLISH_GAMEBANANA_PATH }}/*
         
     - name: Upload NuGet Release Artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v4
       with:
         # Artifact name
         name: NuGet Release
@@ -117,7 +99,7 @@ jobs:
           ${{ env.PUBLISH_NUGET_PATH }}/*
         
     - name: Upload Changelog Artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v4
       with:
         # Artifact name
         name: Changelog
