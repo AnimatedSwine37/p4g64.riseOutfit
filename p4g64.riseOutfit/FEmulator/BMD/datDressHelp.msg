@@ -7,7 +7,7 @@
 [msg dress_015]
 [s]Simple clothes for[n]Inaba's hot summers.[n][e]
 
-[msg dress_020]
+[msg dress_01D]
 [s]Warm clothes for[n]Inaba's cold winters.[n][e]
 
 [msg dress_025]
